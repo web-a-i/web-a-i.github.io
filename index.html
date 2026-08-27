@@ -369,6 +369,8 @@ section{padding:130px 0}
   overflow: hidden;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   background: #111;
+  contain: strict;
+  will-change: transform;
 }
 
 .work-live-preview iframe {
@@ -566,6 +568,38 @@ form{display:grid;gap:14px}
 }
 .form-success button:hover{background:#fff;color:#090909}
 
+.form-status{
+  position:fixed;right:24px;bottom:24px;z-index:3000;
+  width:min(390px,calc(100vw - 32px));padding:18px 20px;
+  border:1px solid rgba(255,255,255,.12);border-radius:18px;
+  background:rgba(17,17,17,.88);backdrop-filter:blur(20px);
+  box-shadow:0 24px 70px rgba(0,0,0,.38);
+  display:flex;align-items:flex-start;gap:13px;
+  opacity:0;visibility:hidden;transform:translate3d(0,18px,0);
+  pointer-events:none;
+  transition:opacity .35s var(--ease),transform .45s var(--ease),visibility .35s var(--ease);
+}
+.form-status.show{opacity:1;visibility:visible;transform:none}
+.form-status.error{border-color:rgba(255,120,100,.25)}
+.form-status-mark{
+  flex:0 0 auto;width:34px;height:34px;border-radius:50%;
+  display:grid;place-items:center;background:#ff705f;color:#140706;
+  font-weight:800;font-size:15px;
+}
+.form-status-copy{min-width:0}
+.form-status-title{margin:0;font:700 15px/1.2 "Manrope",sans-serif;letter-spacing:-.02em}
+.form-status-text{margin:5px 0 0;color:#8f8f89;font-size:12px;line-height:1.5}
+.form-status-close{
+  margin-left:auto;flex:0 0 auto;width:28px;height:28px;border:1px solid var(--line);
+  border-radius:50%;background:transparent;color:#aaa;display:grid;place-items:center;
+  font-size:15px;line-height:1;
+  transition:background .25s var(--ease),color .25s var(--ease),border-color .25s var(--ease);
+}
+.form-status-close:hover{background:#fff;color:#090909;border-color:#fff}
+@media (max-width:560px){
+  .form-status{right:16px;bottom:16px}
+}
+
 footer{padding:35px 0;border-top:1px solid var(--line)}
 .footer-inner{display:flex;align-items:center;justify-content:space-between;color:#666660;font-size:12px}
 
@@ -688,7 +722,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{
         <div>
           <div class="eyebrow" data-reveal><span class="dot"></span> digital studio / design × development</div>
           <h1 data-reveal>сайты,<br>которые <span>запоминают.</span></h1>
-          <p class="hero-copy" data-reveal>создаём визуально сильные цифровые продукты, в которых дизайн работает вместе с технологией, а каждая деталь имеет смысл.</p>
+          <p class="hero-copy" data-reveal>Создаём визуально сильные цифровые продукты, в которых дизайн работает вместе с технологией, а каждая деталь имеет смысл.</p>
           <div class="hero-actions" data-reveal>
             <a href="#work" class="btn primary magnetic">смотреть работы <span class="arrow">↗</span></a>
             <a href="#contact" class="btn ghost magnetic">обсудить идею</a>
@@ -696,7 +730,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{
         </div>
         <aside class="hero-side" data-reveal>
           <div class="signal-card">
-            <p>не просто «сделать сайт». мы строим цифровой образ бренда — от первого экрана до последнего взаимодействия.</p>
+            <p>Не просто «сделать сайт». мы строим цифровой образ бренда — от первого экрана до последнего взаимодействия.</p>
             <div class="signal-meta"><span>scroll to explore</span><span>© 2026 webai</span></div>
           </div>
         </aside>
@@ -716,50 +750,46 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{
             <div class="section-kicker">01 / selected work</div>
             <h2 class="section-title">проекты, которым<br>не нужен шум.</h2>
           </div>
-          <div class="section-note">каждый кейс собран вокруг одной идеи: сделать цифровой опыт заметным, понятным и естественным.</div>
+          <div class="section-note">Каждый кейс собран вокруг одной идеи: сделать цифровой опыт заметным, понятным и естественным.</div>
         </div>
 
         <div class="work-list-vertical">
-          <!-- Проект 1: Слева превью, справа текст -->
           <a class="work-row-card tilt" href="https://web-a-i.github.io/bakery/" target="_blank" rel="noopener" data-tilt data-reveal aria-label="открыть кейс bakery">
             <div class="work-live-preview">
-              <iframe src="https://web-a-i.github.io/bakery/" tabindex="-1" title="Bakery Preview"></iframe>
+              <iframe data-src="https://web-a-i.github.io/bakery/" tabindex="-1" title="Bakery Preview"></iframe>
               <div class="preview-overlay"></div>
             </div>
             <div class="work-text-block">
               <div class="work-tag">website / 2026</div>
               <div class="work-name">bakery</div>
-              <div class="work-desc">Современный веб-проект для пекарни.</div>
+              <div class="work-desc">Лендинг и онлайн-витрина ремесленной пекарни с функцией предзаказа свежей выпечки и кастомизацией десертов.</div>
             </div>
           </a>
 
-          <!-- Проект 2: Справа превью, слева текст -->
           <a class="work-row-card tilt" href="https://web-a-i.github.io/haven/" target="_blank" rel="noopener" data-tilt data-reveal aria-label="открыть кейс haven">
             <div class="work-live-preview">
-              <iframe src="https://web-a-i.github.io/haven/" tabindex="-1" title="Haven Preview"></iframe>
+              <iframe data-src="https://web-a-i.github.io/haven/" tabindex="-1" title="Haven Preview"></iframe>
               <div class="preview-overlay"></div>
             </div>
             <div class="work-text-block">
               <div class="work-tag">brand / commerce</div>
               <div class="work-name">haven</div>
-              <div class="work-desc">Стильный и минималистичный дизайн с удобной структурой.</div>
+              <div class="work-desc">Веб-платформа для поиска и бронирования премиальных отелей с винтажной эстетикой посадочных талонов.</div>
             </div>
           </a>
 
-          <!-- Проект 3: Слева превью, справа текст -->
           <a class="work-row-card tilt" href="https://web-a-i.github.io/gemrieli/" target="_blank" rel="noopener" data-tilt data-reveal aria-label="открыть кейс gemrieli">
             <div class="work-live-preview">
-              <iframe src="https://web-a-i.github.io/gemrieli/" tabindex="-1" title="Gemrieli Preview"></iframe>
+              <iframe data-src="https://web-a-i.github.io/gemrieli/" tabindex="-1" title="Gemrieli Preview"></iframe>
               <div class="preview-overlay"></div>
             </div>
             <div class="work-text-block">
               <div class="work-tag">studio / portfolio</div>
               <div class="work-name">gemrieli</div>
-              <div class="work-desc">Эстетичный сайт с акцентом на визуальную составляющую.</div>
+              <div class="work-desc">Лендинг и веб-интерфейс заказа для ресторана современной грузинской кухни с акцентом на самовывоз и доставку.</div>
             </div>
           </a>
 
-          <!-- Проект 4: Справа превью, слева текст -->
           <a class="work-row-card tilt" href="#contact" data-tilt data-reveal aria-label="следующий проект">
             <div class="work-live-preview">
               <div class="placeholder-bg" style="background:#2a2a2a;width:100%;height:100%;"></div>
@@ -772,6 +802,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{
             </div>
           </a>
         </div>
+
       </div>
     </section>
 
@@ -782,29 +813,29 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{
             <div class="section-kicker">02 / why webai</div>
             <h2 class="section-title">дизайн — это<br>не декорация.</h2>
           </div>
-          <div class="section-note">мы соединяем стратегию, визуальную систему и разработку в один цельный процесс.</div>
+          <div class="section-note">Мы соединяем стратегию, визуальную систему и разработку в один цельный процесс.</div>
         </div>
 
         <div class="adv-grid">
           <article class="adv" data-reveal>
             <div class="adv-num">01</div>
             <h3>визуальная идея</h3>
-            <p>не начинаем с шаблона. сначала определяем характер бренда и превращаем его в понятный визуальный язык.</p>
+            <p>Не начинаем с шаблона. сначала определяем характер бренда и превращаем его в понятный визуальный язык.</p>
           </article>
           <article class="adv" data-reveal>
             <div class="adv-num">02</div>
             <h3>продуманный ux</h3>
-            <p>пользователь должен быстро понимать, куда смотреть и что делать. эстетика никогда не мешает логике.</p>
+            <p>Пользователь должен быстро понимать, куда смотреть и что делать. эстетика никогда не мешает логике.</p>
           </article>
           <article class="adv" data-reveal>
             <div class="adv-num">03</div>
             <h3>живой motion</h3>
-            <p>плавные переходы, hover-состояния и scroll-анимации добавляют ощущение дорогого продукта без визуального шума.</p>
+            <p>Плавные переходы, hover-состояния и scroll-анимации добавляют ощущение дорогого продукта без визуального шума.</p>
           </article>
           <article class="adv" data-reveal>
             <div class="adv-num">04</div>
             <h3>чистая разработка</h3>
-            <p>адаптивная верстка, аккуратный javascript и внимание к скорости — чтобы сайт выглядел хорошо не только в макете.</p>
+            <p>Адаптивная верстка, аккуратный javascript и внимание к скорости — чтобы сайт выглядел хорошо не только в макете.</p>
           </article>
         </div>
 
@@ -822,7 +853,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{
         <div data-reveal>
           <div class="section-kicker">03 / get in touch</div>
           <h2 class="section-title">есть идея?<br>сделаем её заметной.</h2>
-          <p class="contact-copy">расскажите в двух словах о задаче. мы свяжемся, уточним детали и предложим направление, которое подойдёт вашему проекту.</p>
+          <p class="contact-copy">Расскажите в двух словах о задаче. мы свяжемся, уточним детали и предложим направление, которое подойдёт вашему проекту.</p>
           <div class="contact-links">
             <a class="contact-link" href="mailto:hello@webai.studio">hello@webai.studio</a>
             <a class="contact-link" href="https://t.me/" target="_blank" rel="noopener">telegram ↗</a>
@@ -848,8 +879,17 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{
         <div id="formSuccess" class="form-success" role="status" aria-live="polite">
           <div class="success-mark">✓</div>
           <h3>запрос принят.</h3>
-          <p>форма отработала внутри страницы без перезагрузки и перехода в почтовый клиент. когда подключите backend или webhook, сюда можно добавить реальную отправку.</p>
+          <p>Ваше сообщение отправлено. Мы свяжемся с вами в ближайшее время, спасибо.</p>
           <button type="button" id="successReset">отправить ещё раз</button>
+        </div>
+
+        <div id="formStatus" class="form-status error" role="status" aria-live="polite" aria-hidden="true">
+          <div class="form-status-mark">!</div>
+          <div class="form-status-copy">
+            <p class="form-status-title">не удалось отправить</p>
+            <p class="form-status-text">telegram не принял заявку. попробуйте ещё раз.</p>
+          </div>
+          <button class="form-status-close" id="formStatusClose" type="button" aria-label="закрыть">×</button>
         </div>
       </div>
     </section>
@@ -1145,8 +1185,32 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{
   const form = document.getElementById('contactForm');
   const success = document.getElementById('formSuccess');
   const successReset = document.getElementById('successReset');
+  const formStatus = document.getElementById('formStatus');
+  const formStatusClose = document.getElementById('formStatusClose');
+  let statusTimer = 0;
 
-  form?.addEventListener('submit', (event) => {
+  const hideFormStatus = () => {
+    window.clearTimeout(statusTimer);
+    formStatus?.classList.remove('show');
+    formStatus?.setAttribute('aria-hidden', 'true');
+  };
+
+  const showFormStatus = (message) => {
+    if (!formStatus) return;
+    const text = formStatus.querySelector('.form-status-text');
+    if (text) text.textContent = message;
+    formStatus.classList.remove('show');
+    formStatus.setAttribute('aria-hidden', 'true');
+    requestAnimationFrame(() => {
+      formStatus.classList.add('show');
+      formStatus.setAttribute('aria-hidden', 'false');
+    });
+    statusTimer = window.setTimeout(hideFormStatus, 5200);
+  };
+
+  formStatusClose?.addEventListener('click', hideFormStatus);
+
+  form?.addEventListener('submit', async (event) => {
     event.preventDefault();
 
     if (!form.checkValidity()) {
@@ -1158,9 +1222,40 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{
     button.disabled = true;
     button.textContent = 'отправляем…';
 
-    window.setTimeout(() => {
+    const BOT_TOKEN = '8926530731:AAF1iW02mVQnKuvPzRbBYDnbE1yfi-dYKRs';
+    const CHAT_ID = '1192092634';
+
+    const name = form.querySelector('#name').value.trim();
+    const contact = form.querySelector('#contact').value.trim();
+    const message = form.querySelector('#message').value.trim() || 'Не указано';
+
+    const text = `📬 *Новая заявка с сайта Webai!*\n\n👤 *Имя:* ${name}\n📞 *Контакт:* ${contact}\n💬 *Проект:* ${message}`;
+
+    try {
+      const controller = new AbortController();
+      const timeoutId = window.setTimeout(() => controller.abort(), 10000);
+
+      const response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          chat_id: CHAT_ID,
+          text,
+          parse_mode: 'Markdown'
+        }),
+        signal: controller.signal
+      });
+
+      window.clearTimeout(timeoutId);
+
+      if (!response.ok) {
+        throw new Error('Ошибка сервера Telegram');
+      }
+
+      button.textContent = 'отправлено ✓';
       form.hidden = true;
       success.classList.add('show');
+      hideFormStatus();
 
       if (window.gsap && !prefersReducedMotion) {
         gsap.fromTo(success,
@@ -1174,7 +1269,15 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{
       } else {
         success.style.opacity = '1';
       }
-    }, 450);
+    } catch (error) {
+      console.error('webai form submit error:', error);
+      const errorMessage = error?.name === 'AbortError'
+        ? 'Telegram не ответил вовремя. Проверьте соединение и попробуйте ещё раз. Если такое будет повторяться, напишите нам напрямую в telegram или email.'
+        : 'Не удалось отправить заявку. Если такое будет повторяться, напишите нам напрямую в telegram или email.';
+      button.disabled = false;
+      button.innerHTML = 'отправить запрос <span>↗</span>';
+      showFormStatus(errorMessage);
+    }
   });
 
   successReset?.addEventListener('click', () => {
@@ -1194,6 +1297,26 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{
     }
   });
 })();
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const observer = new IntersectionObserver((entries, obs) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const iframe = entry.target;
+          if (iframe.dataset.src) {
+            iframe.src = iframe.dataset.src;
+            iframe.removeAttribute('data-src');
+          }
+          obs.unobserve(iframe);
+        }
+      });
+    }, { rootMargin: '200px 0px' });
+
+    document.querySelectorAll('.work-live-preview iframe').forEach(iframe => {
+      observer.observe(iframe);
+    });
+  });
 </script>
 </body>
 </html>
