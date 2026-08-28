@@ -40,8 +40,24 @@ body:before{
   z-index:20;
   opacity:.055;
   background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
+  transform:translateZ(0);
+  will-change:transform;
 }
-::selection{background:var(--accent);color:#0a0a0a}
+::selection{
+  background:rgba(217,255,72,.35);
+  color:inherit;
+  text-shadow:none;
+}
+::-moz-selection{
+  background:rgba(217,255,72,.35);
+  color:inherit;
+  text-shadow:none;
+}
+
+img, iframe, svg, .cursor, .preview-overlay, .menu-toggle, .brand-mark {
+  user-select:none;
+}
+
 a{color:inherit;text-decoration:none}
 button,input,textarea{font:inherit}
 button{cursor:pointer}
@@ -57,12 +73,8 @@ button{cursor:pointer}
   border-radius:50%;
   transform:translate3d(-50%,-50%,0);
   mix-blend-mode:difference;
-  will-change:transform,width,height,background,border-color;
-  transition:
-    width .28s var(--ease),
-    height .28s var(--ease),
-    background .28s var(--ease),
-    border-color .28s var(--ease);
+  will-change:transform,background,border-color;
+  transition:background .28s var(--ease),border-color .28s var(--ease);
 }
 .cursor-dot{
   position:absolute;
@@ -74,7 +86,6 @@ button{cursor:pointer}
   opacity:.9;
 }
 .cursor.active{
-  width:58px;height:58px;
   background:#fff;
   border-color:#fff;
 }
@@ -373,6 +384,21 @@ section{padding:130px 0}
   will-change: transform;
 }
 
+/* Анимация пульсации лоадера */
+@keyframes pulse-loader {
+  0% { background-color: #111; }
+  50% { background-color: #1a1a1a; }
+  100% { background-color: #111; }
+}
+
+.iframe-loader {
+  position: absolute;
+  inset: 0;
+  background: #111;
+  animation: pulse-loader 1.5s infinite ease-in-out;
+  z-index: 1;
+}
+
 .work-live-preview iframe {
   /* Задаем ширину 250% от карточки (сайт думает, что открыт на десктопе ~1500px) */
   width: 250%;
@@ -385,6 +411,14 @@ section{padding:130px 0}
   /* Сжимаем обратно точно в 2.5 раза (1 / 2.5 = 0.4) */
   transform: scale(0.4);
   transform-origin: top left;
+
+  opacity: 0;
+  transition: opacity 0.8s ease;
+  z-index: 2;
+}
+
+.work-live-preview iframe.is-loaded {
+  opacity: 1;
 }
 
 /* Оверлей поверх iframe */
@@ -756,7 +790,8 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{
         <div class="work-list-vertical">
           <a class="work-row-card tilt" href="https://web-a-i.github.io/bakery/" target="_blank" rel="noopener" data-tilt data-reveal aria-label="открыть кейс bakery">
             <div class="work-live-preview">
-              <iframe data-src="https://web-a-i.github.io/bakery/" tabindex="-1" title="Bakery Preview"></iframe>
+              <div class="iframe-loader"></div>
+              <iframe data-src="https://web-a-i.github.io/bakery/" tabindex="-1" title="Bakery Preview" sandbox="allow-scripts allow-same-origin"></iframe>
               <div class="preview-overlay"></div>
             </div>
             <div class="work-text-block">
@@ -768,7 +803,8 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{
 
           <a class="work-row-card tilt" href="https://web-a-i.github.io/haven/" target="_blank" rel="noopener" data-tilt data-reveal aria-label="открыть кейс haven">
             <div class="work-live-preview">
-              <iframe data-src="https://web-a-i.github.io/haven/" tabindex="-1" title="Haven Preview"></iframe>
+              <div class="iframe-loader"></div>
+              <iframe data-src="https://web-a-i.github.io/haven/" tabindex="-1" title="Haven Preview" sandbox="allow-scripts allow-same-origin"></iframe>
               <div class="preview-overlay"></div>
             </div>
             <div class="work-text-block">
@@ -780,7 +816,8 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{
 
           <a class="work-row-card tilt" href="https://web-a-i.github.io/gemrieli/" target="_blank" rel="noopener" data-tilt data-reveal aria-label="открыть кейс gemrieli">
             <div class="work-live-preview">
-              <iframe data-src="https://web-a-i.github.io/gemrieli/" tabindex="-1" title="Gemrieli Preview"></iframe>
+              <div class="iframe-loader"></div>
+              <iframe data-src="https://web-a-i.github.io/gemrieli/" tabindex="-1" title="Gemrieli Preview" sandbox="allow-scripts allow-same-origin"></iframe>
               <div class="preview-overlay"></div>
             </div>
             <div class="work-text-block">
@@ -982,7 +1019,8 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{
     const renderCursor = () => {
       currentX = lerp(currentX, targetX, 0.17);
       currentY = lerp(currentY, targetY, 0.17);
-      cursor.style.transform = `translate3d(${currentX}px, ${currentY}px, 0) translate3d(-50%, -50%, 0)`;
+      const scale = cursor.classList.contains('active') ? 3.22 : 1;
+      cursor.style.transform = `translate3d(${currentX}px, ${currentY}px, 0) translate3d(-50%, -50%, 0) scale(${scale})`;
       requestAnimationFrame(renderCursor);
     };
 
@@ -1300,18 +1338,45 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{
 </script>
 <script>
   document.addEventListener('DOMContentLoaded', () => {
+    const iframesToLoad = [];
+    let isLoading = false;
+
+    // Очередь загрузки, чтобы не вешать браузер несколькими сайтами сразу
+    const processQueue = () => {
+      if (iframesToLoad.length === 0) {
+        isLoading = false;
+        return;
+      }
+
+      isLoading = true;
+      const iframe = iframesToLoad.shift();
+
+      if (iframe.dataset.src) {
+        // Выносим загрузку из основного потока
+        setTimeout(() => {
+          iframe.addEventListener('load', () => {
+            iframe.classList.add('is-loaded');
+          }, { once: true });
+
+          iframe.src = iframe.dataset.src;
+          iframe.removeAttribute('data-src');
+          // Ждем 800мс перед загрузкой следующего, чтобы скролл оставался плавным
+          setTimeout(processQueue, 800);
+        }, 50);
+      } else {
+        processQueue();
+      }
+    };
+
     const observer = new IntersectionObserver((entries, obs) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          const iframe = entry.target;
-          if (iframe.dataset.src) {
-            iframe.src = iframe.dataset.src;
-            iframe.removeAttribute('data-src');
-          }
-          obs.unobserve(iframe);
+          iframesToLoad.push(entry.target);
+          obs.unobserve(entry.target); // Перестаем следить после добавления в очередь
+          if (!isLoading) processQueue();
         }
       });
-    }, { rootMargin: '200px 0px' });
+    }, { rootMargin: '50px 0px' });
 
     document.querySelectorAll('.work-live-preview iframe').forEach(iframe => {
       observer.observe(iframe);
